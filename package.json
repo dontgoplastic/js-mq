@@ -1,0 +1,24 @@
+{
+  "name": "js-mq",
+  "version": "0.1.0",
+  "description": "Register media queries by name and fire callbacks when crossing breakpoints",
+  "main": "js-mq.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dontgoplastic/js-mq.git"
+  },
+  "author": "Billy White",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dontgoplastic/js-mq/issues"
+  },
+  "homepage": "https://github.com/dontgoplastic/js-mq#readme",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.14.0",
+    "gulp": "^3.9.1",
+    "matchmedia-polyfill": "^0.3.0",
+    "rollup": "^0.34.10",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-node-resolve": "^2.0.0"
+  }
+}
