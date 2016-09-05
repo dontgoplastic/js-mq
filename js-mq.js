@@ -1,7 +1,5 @@
-(function (exports,_) {
+(function (exports) {
 'use strict';
-
-_ = 'default' in _ ? _['default'] : _;
 
 /*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas, David Knight. Dual MIT/BSD license */
 
@@ -126,159 +124,288 @@ window.matchMedia || (window.matchMedia = function() {
     };
 }());
 
-// @TODO es6 this up
-// @TODO lodash not working?
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var es6PromiseDebounce = createCommonjsModule(function (module) {
+(function() {
+
+    "use strict";
+
+    module.exports = function(func, wait, immediate) {
+
+        var timeout;
+        return function() {
+
+            var context = this, args = arguments;
+
+            return new Promise(function(resolve) {
+                var later = function() {
+                    timeout = null;
+                    if (!immediate) resolve(func.apply(context, args));
+                };
+
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+
+                if (callNow) resolve(func.apply(context, args));
+            });
+        };
+    };
+
+})();
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _class = function () {
+
+  // (on[, from], cbOn[, cbOff][, always])
+  function _class(_ref) {
+    var args = _ref.args;
+    var config = _ref.config;
+
+    _classCallCheck(this, _class);
+
+    var on = null;
+    var from = '*';
+    var cbOn = null;
+    var cbOff = null;
+    var alwaysTrigger = false;
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = args[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var arg = _step.value;
+
+        switch (typeof arg === 'undefined' ? 'undefined' : _typeof(arg)) {
+          case 'string':
+            if (on === null) {
+              on = arg;
+            } else {
+              from = arg;
+            }
+            break;
+          case 'function':
+            if (cbOn === null) {
+              cbOn = arg;
+            } else {
+              cbOff = arg;
+            }
+            break;
+          case 'boolean':
+            alwaysTrigger = arg;
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    _extends(this, {
+      isActive: null,
+      matchesOn: parseMatchInputString(on, config.inversePrefix),
+      matchesFrom: parseMatchInputString(from, config.inversePrefix),
+      cbOn: cbOn, cbOff: cbOff, alwaysTrigger: alwaysTrigger
+    });
+  }
+
+  _createClass(_class, [{
+    key: 'exec',
+    value: function exec(currState, prevState) {
+      var matchesCurr = testState(this.matchesOn, currState);
+      var matchesPrev = testState(this.matchesFrom, prevState);
+
+      var shouldBeEnabled = matchesCurr && matchesPrev;
+
+      if (shouldBeEnabled && (!this.isActive || this.alwaysTrigger)) {
+        this.isActive = true;
+        this.cbOn();
+      } else if (shouldBeEnabled === false && (this.isActive === null || this.isActive)) {
+        this.isActive = false;
+        if (this.cbOff) {
+          this.cbOff();
+        }
+      }
+    }
+  }]);
+
+  return _class;
+}();
+
+function testState(matches, state) {
+  if (matches === true) return true;
+
+  return matches.some(function (match) {
+    var includes = state.includes(match.testAgainst);
+    return match.isInverse ? !includes : includes;
+  });
+}
+
+function parseMatchInputString(inputString, inversePrefix) {
+  if (inputString === '*' || inputString.includes('*')) {
+    return true;
+  } else {
+    return inputString.split(' ').map(function (match) {
+      var isInverse = match.startsWith(inversePrefix);
+      var testAgainst = isInverse ? match.substring(inversePrefix.length) : match;
+      return { match: match, isInverse: isInverse, testAgainst: testAgainst };
+    });
+  }
+}
+
+var config = {
+  inversePrefix: 'not-',
+  disallowedNames: /[^a-z-]/g
+};
 
 var queries = [];
-var callbacks = [];
+var queryRules = [];
+
 var readyCallbacks = [];
 var prevState = null;
-var currState = null;
+var currState = [];
 
-var onMediaQueryDebounced = _.debounce(onMediaQuery, 0);
-var updateCurrStateDebounced = _.debounce(updateCurrState, 0);
-
-// @TODO allow inverse registration:
-// mq.on('not-xs', () => { ... })
-var inversePrefix = 'not-';
-
-function register(val) {
-  if (Array.isArray(val)) {
-    _.each(val, doRegister);
-  } else {
-    doRegister(val);
-  }
-};
-
-function doRegister(o) {
-
-  // @TODO restrict + validate query names
-
-  if (_.chain(queries).pluck('name').contains(o.name).value()) {
-    // @TODO Test for existing name & value and just ignore if they both match
-    throw new Error('Media Query \'name\' values must be unique. Attempted to register: ' + o.name);
-  }
-
-  var mediaQueryList = window.matchMedia(o.query);
-  mediaQueryList.addListener(onMediaQueryDebounced);
-
-  queries.push({
-    name: o.name,
-    mediaQueryList: mediaQueryList
-  });
-
-  updateCurrStateDebounced();
-};
-
-function getState(withInverse) {
-  if (withInverse) {
-    // @TODO cache this
-    var prefix = inversePrefix;
-    var allNames = _.pluck(queries, 'name');
-    var notCurr = _.map(_.difference(allNames, currState), function (name) {
-      return prefix + name;
-    });
-    return currState.concat(notCurr);
-  } else {
-    return currState;
-  }
-};
-
-function on() {
-  // matchesOn, matchesFrom (optional), callback
-  var args = _.toArray(arguments);
-
-  if (args.length === 2) {
-    args.splice(1, 0, '*');
-  }
-
-  callbacks.push({ matchesOn: args[0], matchesFrom: args[1], callback: args[2] });
-};
-
-function is(name) {
-  if (!currState) {
-    onMediaQuery();
-  }
-  return _.indexOf(currState, name) !== -1;
-};
-
-function ready(callback) {
-  if (readyCallbacks === null) {
-    callback();
-  } else {
-    readyCallbacks.push(callback);
-  }
-};
-
-function trigger() {
-  onMediaQuery(false);
-};
-
-function updateCurrState() {
+function updateState() {
 
   prevState = currState;
   currState = [];
 
-  _.each(queries, function (query) {
-    var queryName = query.name;
-    var mediaQueryList = query.mediaQueryList;
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
 
-    if (mediaQueryList.matches) {
-      currState.push(queryName);
+  try {
+    for (var _iterator = queries[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var _step$value = _step.value;
+      var name = _step$value.name;
+      var list = _step$value.list;
+
+      if (list.matches) {
+        currState.push(name);
+      } else {
+        currState.push(config.inversePrefix + name);
+      }
     }
-  });
-
-  if (!prevState) {
-    prevState = currState;
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
   }
 
-  if (readyCallbacks !== null) {
-    _.invoke(readyCallbacks, 'call');
+  if (readyCallbacks) {
+    readyCallbacks.forEach(function (cb) {
+      return cb();
+    });
     readyCallbacks = null;
   }
 }
 
-function onMediaQuery(evaluateState) {
+var updateStateAndExecRules = es6PromiseDebounce(function updateStateAndExecRules() {
+  updateState();
+  execQueryRules();
+}, 0);
 
-  if (evaluateState !== false) {
-    updateCurrState();
+function register(val) {
+  if (Array.isArray(val)) {
+    val.forEach(function (o) {
+      return doRegister(o);
+    });
+  } else {
+    doRegister(val);
   }
 
-  _.each(queries, function (query) {
-    var queryName = query.name;
-    var mediaQueryList = query.mediaQueryList;
+  // ideally register all queries prior to adding rules
+  if (queryRules.length) {
+    updateStateAndExecRules();
+  }
+}
 
-    if (mediaQueryList.matches) {
-      _.each(callbacks, function (callbackInfo) {
+function doRegister(_ref) {
+  var name = _ref.name;
+  var query = _ref.query;
 
-        var matchesOn = callbackInfo.matchesOn;
-        var matchesFrom = callbackInfo.matchesFrom;
 
-        if ((matchesOn === '*' || _.chain(matchesOn.split(' ')).contains(queryName).value() // @TODO precompute the split
-        ) && (matchesFrom === '*' || _.intersection(matchesFrom.split(' '), prevState).length // @TODO precompute the split
-        )) {
-          var newEventObj = _.extend({}, {
-            mediaQueryList: mediaQueryList,
-            matchesOn: matchesOn,
-            matchesFrom: matchesFrom,
-            queryName: queryName,
-            prevState: prevState,
-            currState: currState
-          });
-          callbackInfo.callback.call(window, newEventObj);
-        }
-      });
-    }
+  if (config.disallowedNames.test(name) === true) {
+    throw new Error('Registered media query name \'' + name + '\' not allowed');
+  }
+  if (queries.some(function (el) {
+    return el.name == name && el.query !== query;
+  })) {
+    throw new Error('Registered media queries must be unique. Attempted to register conflicting query rules for \'' + name + '\'');
+  }
+
+  var list = window.matchMedia(query);
+  queries.push({ name: name, query: query, list: list });
+
+  list.addListener(updateStateAndExecRules);
+}
+
+function on() {
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  queryRules.push(new _class({ args: args, config: config }));
+  updateStateAndExecRules();
+}
+
+function is(name) {
+  if (!currState) updateState();
+  return currState.includes(name);
+}
+
+function ready(cb) {
+  readyCallbacks ? readyCallbacks.push(cb) : cb();
+}
+
+function execQueryRules() {
+  queryRules.forEach(function (cb) {
+    return cb.exec(currState, prevState);
   });
 }
 
-exports.inversePrefix = inversePrefix;
+function getState() {
+  return currState;
+}
+
+exports.config = config;
 exports.on = on;
 exports.is = is;
 exports.register = register;
 exports.getState = getState;
-exports.trigger = trigger;
+exports.trigger = execQueryRules;
 exports.ready = ready;
 
-}((this.mq = this.mq || {}),_));
+}((this.mq = this.mq || {})));
 //# sourceMappingURL=js-mq.js.map

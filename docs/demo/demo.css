@@ -1,0 +1,97 @@
+body {
+	background-color: #EEE;
+	padding: 0 30px 75px;
+	margin: 0;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-align: center;
+	color: #333;
+}
+
+.section-mq-items {
+	margin-bottom: 40px;
+}
+
+.header-mq-items {
+	padding: 20px;
+	border: solid #e0e0e0;
+	background-color: #e8e8e8;
+	border-width: 1px 0;
+	margin: 0 -30px 15px;
+	font-weight: normal;
+	font-size: 20px;
+}
+
+.list-mq-items {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	font-family: Menlo, Monaco, monospace;
+}
+
+
+@keyframes anim-flash {
+	from {
+		color: #FFF;
+		border-color: #FFF;
+		background-color: #FFF;
+	}
+}
+
+.mq-item--anim-flash {
+	animation-name: anim-flash;
+}
+
+.mq-item {
+	border: 1px solid;
+	padding: 10px;
+	max-width: 300px;
+	margin: 0 auto;
+	animation-duration: .75s;
+	will-change: background-color, color, border-color;
+}
+.mq-item--inactive {
+	border-color: #e0e0e0;
+	color: #bfbfbf;
+}
+.mq-item--active {
+	color: #FFF;
+	background-color: #1e6f8c;
+	border-color: #154e62;
+
+}
+
+.mq-item + .mq-item {
+	margin-top: 10px;
+}
+.mq-item:after {
+	content: '\'' attr(data-mq) '\'';
+}
+.mq-item[data-mq-from]:before {
+	content: 'from \'' attr(data-mq-from) '\' to ';
+}
+
+.breakpoint-vis {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 20px;
+	font-family: Menlo, Monaco, monospace;
+	font-size: 24px;
+	color: #FFF;
+	background-color: #1e6f8c;
+	border-top: 1px solid #154e62;
+}
+
+@media (min-width: 1200px) {
+	.breakpoint-vis:before { content: 'lg' }
+}
+@media (max-width: 1199px) {
+	.breakpoint-vis:before { content: 'md' }
+}
+@media (max-width: 991px) {
+	.breakpoint-vis:before { content: 'sm' }
+}
+@media (max-width: 767px) {
+	.breakpoint-vis:before { content: 'xs' }
+}

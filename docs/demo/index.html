@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>js-mq demo</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8" />
+		<script src="../../js-mq.js"></script>
+		<script src="demo-es5.js"></script>
+		<link rel="stylesheet" href="demo.css">
+	</head>
+<body>
+
+<section class="section-mq-items">
+	<h1 class="header-mq-items">Individual</h1>
+	<ul class="list-mq-items">
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="xs"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="sm"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="md"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="lg"></li>
+	</ul>
+</section>
+
+<section class="section-mq-items">
+	<h1 class="header-mq-items">Combination</h1>
+	<ul class="list-mq-items">
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="xs sm"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="sm md"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="md lg"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="xs lg"></li>
+	</ul>
+</section>
+
+<section class="section-mq-items">
+	<h1 class="header-mq-items">Inverse</h1>
+	<ul class="list-mq-items">
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="not-xs"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="not-sm"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="not-md"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq="not-lg"></li>
+	</ul>
+</section>
+
+<section class="section-mq-items">
+	<h1 class="header-mq-items">From</h1>
+	<ul class="list-mq-items">
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq-from="xs" data-mq="sm"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq-from="sm" data-mq="md"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq-from="md" data-mq="lg"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq-from="sm lg" data-mq="md"></li>
+	</ul>
+</section>
+
+<section class="section-mq-items">
+	<h1 class="header-mq-items">Wildcard</h1>
+	<ul class="list-mq-items">
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq-from="*" data-mq="xs"></li>
+		<li class="js-mq-item mq-item mq-item--inactive" data-mq-from="xs" data-mq="*"></li>
+	</ul>
+</section>
+
+
+<div class="breakpoint-vis"></div>
+</body>
+</html>
