@@ -29,10 +29,8 @@ mq.on('*', 'lg', function(e) {
 });
 ```
 
-<!--
 ## Demo
-###[Check it out!]()
--->
+###[Check it out!](https://dontgoplastic.github.io/js-mq/demo)
 
 ## API
 
