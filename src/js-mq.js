@@ -95,4 +95,9 @@ function getState() {
   return currState;
 }
 
-export {config, on, is, register, getState, execQueryRules as trigger, ready}
+const mq = {
+  config, on, is, register, getState, ready,
+  trigger: execQueryRules
+};
+
+export default mq;

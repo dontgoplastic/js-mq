@@ -1,3 +1,5 @@
+import mq from '../../src/js-mq';
+
 mq.register([
     {name: 'xs', query: '(max-width: 767px)'},
     {name: 'sm', query: '(min-width: 768px) and (max-width: 991px)'},

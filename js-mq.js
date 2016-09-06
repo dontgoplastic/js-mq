@@ -1,5 +1,8 @@
-(function (exports) {
-'use strict';
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.mq = factory());
+}(this, (function () { 'use strict';
 
 /*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas, David Knight. Dual MIT/BSD license */
 
@@ -399,13 +402,12 @@ function getState() {
   return currState;
 }
 
-exports.config = config;
-exports.on = on;
-exports.is = is;
-exports.register = register;
-exports.getState = getState;
-exports.trigger = execQueryRules;
-exports.ready = ready;
+var mq = {
+  config: config, on: on, is: is, register: register, getState: getState, ready: ready,
+  trigger: execQueryRules
+};
 
-}((this.mq = this.mq || {})));
+return mq;
+
+})));
 //# sourceMappingURL=js-mq.js.map

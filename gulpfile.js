@@ -18,10 +18,11 @@ function buildMain() {
   }).then((bundle) => {
 
     return bundle.write({
-      format: 'iife',
+      format: 'umd',
       moduleName: 'mq',
       dest: './js-mq.js',
-      sourceMap: true
+      sourceMap: true,
+      context: 'window'
     });
 
   })
@@ -32,6 +33,8 @@ function buildDocs() {
   return rollup.rollup({
     entry: './docs/demo/demo.js',
     plugins: [
+      nodeResolve(),
+      commonjs(),
       babel()
     ]
   }).then((bundle) => {
