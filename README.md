@@ -1,5 +1,7 @@
 # js-mq
 
+[![npm](https://img.shields.io/npm/v/js-mq.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/js-mq)
+
 Register media queries by name and fire callbacks when crossing breakpoints
 
 #### Register Media Queries:
@@ -121,6 +123,7 @@ mq.on('*', function() {
 }, true);
 ```
 
+## Misc
 
 #####Dependencies:
 1. [matchMedia Polyfill](https://github.com/paulirish/matchMedia.js) (pre-bundled)
