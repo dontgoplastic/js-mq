@@ -1,5 +1,7 @@
 # js-mq
 
+Register media queries by name and fire callbacks when crossing breakpoints
+
 #### Register Media Queries:
 ```js
 mq.register([
@@ -109,7 +111,7 @@ Type: `Boolean` default `false`
 
 By default, an `activateCallback` will not fire when moving from one applied media query to another. For example, `xs sm` will initially fire when either `xs` or `sm` applies, but from there if you move from one to the other, it will not fire again. Setting this to `true` changes this behavior.
 
-```
+```js
 mq.on('*', function() {
   // fires once but never again 
 });
