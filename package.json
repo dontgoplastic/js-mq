@@ -1,8 +1,9 @@
 {
   "name": "js-mq",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Register media queries by name and fire callbacks when crossing breakpoints",
-  "main": "js-mq.js",
+  "main": "dist/js-mq.js",
+  "jsnext:main": "dist/js-mq.es2015.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dontgoplastic/js-mq.git"

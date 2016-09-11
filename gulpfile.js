@@ -17,13 +17,20 @@ function buildMain() {
     ]
   }).then((bundle) => {
 
-    return bundle.write({
-      format: 'umd',
-      moduleName: 'mq',
-      dest: './js-mq.js',
-      sourceMap: true,
-      context: 'window'
-    });
+    return Promise.all([
+      bundle.write({
+        format: 'es',
+        moduleName: 'mq',
+        dest: './dist/js-mq.es2015.js',
+        sourceMap: true
+      }),
+      bundle.write({
+        format: 'umd',
+        moduleName: 'mq',
+        dest: './dist/js-mq.js',
+        sourceMap: true
+      })
+    ]);
 
   })
 
