@@ -384,8 +384,7 @@ function on() {
 }
 
 function is(name) {
-  if (!currState) updateState();
-  return currState.includes(name);
+  return getState().includes(name);
 }
 
 function ready(cb) {
@@ -394,11 +393,12 @@ function ready(cb) {
 
 function execQueryRules() {
   queryRules.forEach(function (cb) {
-    return cb.exec(currState, prevState);
+    return cb.exec(getState(), prevState);
   });
 }
 
 function getState() {
+  if (!prevState) updateState();
   return currState;
 }
 

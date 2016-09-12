@@ -79,8 +79,7 @@ function on(...args) {
 
 
 function is(name) {
-  if (!currState) updateState();
-  return currState.includes(name);
+  return getState().includes(name);
 }
 
 function ready(cb) {
@@ -88,10 +87,11 @@ function ready(cb) {
 }
 
 function execQueryRules() {
-  queryRules.forEach(cb => cb.exec(currState, prevState));
+  queryRules.forEach(cb => cb.exec(getState(), prevState));
 }
 
 function getState() {
+  if (!prevState) updateState();
   return currState;
 }
 
