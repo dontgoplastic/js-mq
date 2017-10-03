@@ -19,13 +19,15 @@ function updateState() {
   prevState = currState;
   currState = [];
 
-  for (const {name, list} of queries) {
+  queries.forEach((query) => {
+    const {name, list} = query;
+
     if (list.matches) {
       currState.push(name);
     } else {
       currState.push(config.inversePrefix + name);
     }
-  }
+  });
 
   if (readyCallbacks) {
     readyCallbacks.forEach(cb => cb());

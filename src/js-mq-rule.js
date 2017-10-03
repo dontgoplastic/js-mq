@@ -9,7 +9,7 @@ export default class {
     let cbOff = null;
     let alwaysTrigger = false;
 
-    for (const arg of args) {
+    args.forEach((arg) => {
       switch (typeof arg) {
         case 'string':
           if (on === null) {
@@ -28,7 +28,7 @@ export default class {
         case 'boolean':
           alwaysTrigger = arg;
       }
-    }
+    });
 
     Object.assign(this, {
       isActive: null,

@@ -3,33 +3,33 @@ function createCommonjsModule(fn, module) {
 }
 
 var es6PromiseDebounce = createCommonjsModule(function (module) {
-    (function () {
+(function() {
 
-        "use strict";
+    "use strict";
 
-        module.exports = function (func, wait, immediate) {
+    module.exports = function(func, wait, immediate) {
 
-            var timeout;
-            return function () {
+        var timeout;
+        return function() {
 
-                var context = this,
-                    args = arguments;
+            var context = this, args = arguments;
 
-                return new Promise(function (resolve) {
-                    var later = function later() {
-                        timeout = null;
-                        if (!immediate) resolve(func.apply(context, args));
-                    };
+            return new Promise(function(resolve) {
+                var later = function() {
+                    timeout = null;
+                    if (!immediate) resolve(func.apply(context, args));
+                };
 
-                    var callNow = immediate && !timeout;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
 
-                    if (callNow) resolve(func.apply(context, args));
-                });
-            };
+                if (callNow) resolve(func.apply(context, args));
+            });
         };
-    })();
+    };
+
+})();
 });
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
@@ -198,47 +198,26 @@ var _class = function () {
     var cbOff = null;
     var alwaysTrigger = false;
 
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = args[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var arg = _step.value;
-
-        switch (typeof arg === 'undefined' ? 'undefined' : _typeof(arg)) {
-          case 'string':
-            if (on === null) {
-              on = arg;
-            } else {
-              from = arg;
-            }
-            break;
-          case 'function':
-            if (cbOn === null) {
-              cbOn = arg;
-            } else {
-              cbOff = arg;
-            }
-            break;
-          case 'boolean':
-            alwaysTrigger = arg;
-        }
+    args.forEach(function (arg) {
+      switch (typeof arg === 'undefined' ? 'undefined' : _typeof(arg)) {
+        case 'string':
+          if (on === null) {
+            on = arg;
+          } else {
+            from = arg;
+          }
+          break;
+        case 'function':
+          if (cbOn === null) {
+            cbOn = arg;
+          } else {
+            cbOff = arg;
+          }
+          break;
+        case 'boolean':
+          alwaysTrigger = arg;
       }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
+    });
 
     Object.assign(this, {
       isActive: null,
@@ -308,36 +287,17 @@ function updateState() {
   prevState = currState;
   currState = [];
 
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
+  queries.forEach(function (query) {
+    var name = query.name,
+        list = query.list;
 
-  try {
-    for (var _iterator = queries[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var _ref = _step.value;
-      var name = _ref.name;
-      var list = _ref.list;
 
-      if (list.matches) {
-        currState.push(name);
-      } else {
-        currState.push(config.inversePrefix + name);
-      }
+    if (list.matches) {
+      currState.push(name);
+    } else {
+      currState.push(config.inversePrefix + name);
     }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
+  });
 
   if (readyCallbacks) {
     readyCallbacks.forEach(function (cb) {
@@ -367,9 +327,9 @@ function register(val) {
   }
 }
 
-function doRegister(_ref2) {
-  var name = _ref2.name,
-      query = _ref2.query;
+function doRegister(_ref) {
+  var name = _ref.name,
+      query = _ref.query;
 
 
   if (config.disallowedNames.test(name) === true) {
