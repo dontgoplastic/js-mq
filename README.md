@@ -34,22 +34,22 @@ mq.on('*', 'lg', function(e) {
 ```
 
 ## Demo
-###[Check it out!](https://dontgoplastic.github.io/js-mq/demo)
+### [Check it out!](https://dontgoplastic.github.io/js-mq/demo)
 
 ## API
 
-###mq.register(queryRule)
-####queryRule
+### mq.register(queryRule)
+#### queryRule
 Type: `Object` or `Array`
 
 Register a query rule object (or an array of). Query rules must have unique names.  
 
-#####queryRule.name
+##### queryRule.name
 Type: `String`
 
 Name used to reference the media query.
 
-#####queryRule.query
+##### queryRule.query
 Type: `String`
 
 The [media query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries#Syntax) to test.
@@ -65,11 +65,11 @@ mq.register([
 ```
 
 
-###mq.on(queryNameOn[, queryNameFrom], activateCallback[, deactivateCallback][, alwaysFire])
+### mq.on(queryNameOn[, queryNameFrom], activateCallback[, deactivateCallback][, alwaysFire])
 
 Register callbacks to be fired when you've entered (and optionally exited) specified media queries.
 
-####queryNameOn
+#### queryNameOn
 Type: `String`
 
 Space separated list of registered query names. When any of the named queries apply, the `activateCallback` will fire.
@@ -85,7 +85,7 @@ value | matches
 `not-xs` | on any matching query except for `xs`
 `*` | on any matching query
 
-####queryNameFrom
+#### queryNameFrom
 Type: `String` Default `*`
 
 You may specify an additional query name set to further restrict when the rule is considered active and `activateCallback` fires. If this is specified (i.e. not `*`), in addition to the `queryNameOn` needing to match, the user must have also come from a state where `queryNameFrom` matched.
@@ -98,17 +98,17 @@ value | matches
 `mq.on('*', 'xs sm'` | on any registered query directly from either `xs` or `sm`
 
 
-####activateCallback
+#### activateCallback
 Type: `Function` _TODO: Finalize and document callback params - recommendations welcome!_
 
 Function that gets called when the registered rule activates.
 
-####deactivateCallback
+#### deactivateCallback
 Type: `Function` default `null`
 
 Optional callback that gets fired when you go from an active to inactive state.
 
-####alwaysFire
+#### alwaysFire
 Type: `Boolean` default `false`
 
 By default, an `activateCallback` will not fire when moving from one applied media query to another. For example, `xs sm` will initially fire when either `xs` or `sm` applies, but from there if you move from one to the other, it will not fire again. Setting this to `true` changes this behavior.
@@ -122,8 +122,3 @@ mq.on('*', function() {
   // fires every time a registered media query applies
 }, true);
 ```
-
-## Misc
-
-#####Dependencies:
-1. [matchMedia Polyfill](https://github.com/paulirish/matchMedia.js) (pre-bundled)

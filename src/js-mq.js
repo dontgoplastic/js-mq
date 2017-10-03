@@ -1,5 +1,3 @@
-import 'matchmedia-polyfill';
-import 'matchmedia-polyfill/matchMedia.addListener.js';
 import debounce from 'es6-promise-debounce';
 import QueryRule from './js-mq-rule';
 
