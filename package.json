@@ -1,6 +1,6 @@
 {
   "name": "js-mq",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Register media queries by name and fire callbacks when crossing breakpoints",
   "main": "dist/js-mq.umd.js",
   "repository": {
