@@ -1,4 +1,4 @@
-import debounce from 'es6-promise-debounce';
+import debounce from 'debounce'
 import QueryRule from './js-mq-rule';
 
 const config = {

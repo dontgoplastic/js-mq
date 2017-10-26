@@ -30,13 +30,12 @@ export default class {
       }
     });
 
-    Object.assign(this, {
-      isActive: null,
-      matchesOn: parseMatchInputString(on, config.inversePrefix),
-      matchesFrom: parseMatchInputString(from, config.inversePrefix),
-      cbOn, cbOff, alwaysTrigger
-    });
-
+    this.isActive = null;
+    this.matchesOn = parseMatchInputString(on, config.inversePrefix);
+    this.matchesFrom = parseMatchInputString(from, config.inversePrefix);
+    this.cbOn = cbOn;
+    this.cbOff = cbOff;
+    this.alwaysTrigger = alwaysTrigger;
   }
 
   exec(currState, prevState) {
@@ -61,17 +60,17 @@ function testState(matches, state) {
   if (matches === true) return true;
 
   return matches.some(match => {
-    const includes = state.includes(match.testAgainst);
+    const includes = state.indexOf(match.testAgainst) !== -1;
     return match.isInverse ? !includes : includes;
   });
 }
 
 function parseMatchInputString(inputString, inversePrefix) {
-  if (inputString === '*' || inputString.includes('*')) {
+  if (inputString === '*' || inputString.indexOf('*') !== -1) {
     return true;
   } else {
     return inputString.split(' ').map(match => {
-      const isInverse = match.startsWith(inversePrefix);
+      const isInverse = match.substr(0, inversePrefix.length) === inversePrefix;
       const testAgainst = isInverse ?
           match.substring(inversePrefix.length):
           match;
